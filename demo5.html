@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>demo4</title>
+	<style type="text/css">
+		#number {
+			width: 70%;
+			height: 300px;
+			margin-top: 50px;
+			margin-left: 5px;
+			border: solid 1px black;
+			position: relative;
+			overflow: hidden;
+		}
+		li {
+			width: 50px;
+			margin-left: 5px;
+			border-bottom: solid 1px #f0f0f4;
+			background-color: #808080;
+			color: white;
+			list-style: none;
+			text-align: center;
+			float: left;
+		}
+	</style>
+</head>
+<body>
+	<fieldset>
+		<input type="text" name="input" id='input'>
+		<button id='l_in'>左输入</button>
+		<button id='r_in'>右输入</button>
+		<button id='l_ou'>左输出</button>
+		<button id='r_ou'>右输出</button>
+		<button id='paixu'>排序</button>
+	</fieldset>
+	<div id = 'number'>
+		<ul>
+		</ul>
+	</div>
+	<script type="text/javascript">
+	function juj(){
+		if(!$('input').value.match(/\d+/)){
+			alert('Number,Please!');
+			$('input').value = null;
+			return;
+		};
+		if(!(parseInt($('input').value) >= 10 && parseInt($('input').value) <= 100)){
+			alert('请输入10-100的数字');
+			$('input').value = null;
+			return;
+		};
+		//alert($('number').childNodes[1].childNodes.length);
+			//alert('超过60个输入');
+			//$('input').value = null;
+			//return;
+		//}
+		return;
+	}
+	//取节点
+	function $(id){
+		return document.getElementById(id);
+	}
+	//事件绑定	
+	function addEvent(tar,type,fn){
+		if(typeof addEventListener !== 'undifined'){
+			return tar.addEventListener(type,fn);
+		}else if(typeof attachEvent !== 'undifined'){
+			return tar.attachEvent('on'+type,fn);
+		}else{
+			return tar['on'+type]=fn;
+		} 
+	}
+	//输入输出函数
+	function r_input(){
+		var li = document.createElement('li');
+		li.style.width = 10 + 'px';
+		li.style.height = $('input').value * 3 + 'px';
+		li.style.marginTop = $('number').clientHeight - parseInt(li.style.height) + 'px'; 
+		//marginTop用法不友好，y、clientY、offsetTop不好使？
+		li.style.backgroundColor = 'rgba(12,23,14)';
+		var txt = document.createTextNode($('input').value);
+		li.appendChild(txt);
+		$('number').childNodes[1].appendChild(li);
+		//$('number').childNodes[1].appendChild(li.appendChild(txt));
+		//var txt = document.createTextNode($('input').value);
+		//这么写的话li的类型变成text？不知道为什么。
+		$('input').value = null;
+	}
+	function l_output(){
+		var li = $('number').childNodes[1].childNodes;
+		if(li[1].nodeType != 3){
+			alert(li[1].innerHTML);
+			$('number').childNodes[1].removeChild(li[1]);
+		}
+	}
+	function r_output(){
+		var li = $('number').childNodes[1].childNodes;
+		if(li[li.length - 1].nodeType != 3){
+			alert(li[li.length - 1].innerHTML);
+			$('number').childNodes[1].removeChild(li[li.length - 1]);
+		}
+	}
+	function l_input(){
+		var ul = $('number').childNodes[1];
+		if(ul.childNodes.length == 1){
+			var li = document.createElement('li');
+			li.style.width = 10 + 'px';
+			li.style.height = $('input').value * 3 + 'px';
+			li.style.marginTop = $('number').clientHeight - parseInt(li.style.height) + 'px';
+			li.style.backgroundColor = 'rgba(12,23,14)';
+			var txt = document.createTextNode($('input').value);
+			li.appendChild(txt);
+			ul.appendChild(li);
+			//ul.innerHTML = '<li>' + $('input').value + '</li>';
+			$('input').value = null;
+		}else{
+			var li = document.createElement('li');
+			li.style.width = 10 + 'px';
+			li.style.height = $('input').value * 3 + 'px';
+			li.style.marginTop = $('number').clientHeight - parseInt(li.style.height) + 'px';
+			li.style.backgroundColor = 'rgba(12,23,14)';
+			var txt = document.createTextNode($('input').value);
+			li.appendChild(txt);
+			ul.insertBefore(li,ul.childNodes[1]);
+			//parentNode.insertBefore(newChild,oldChild);
+			//ul.innerHTML = li.appendChild(txt) + ul.innerHTML;
+			$('input').value = null;
+		}
+	}
+	//添加按钮事件
+	addEvent($('input'),'blur',juj)
+	addEvent($('r_in'),'click',r_input);
+	addEvent($('l_ou'),'click',l_output);
+	addEvent($('r_ou'),'click',r_output);
+	addEvent($('l_in'),'click',l_input);
+	//删除Li操作
+	function r_li(e){
+		var e = event || window.event;
+		var tag = e.target || e.srcElement;
+		tag.parentNode.removeChild(tag);
+	}
+	addEvent($('number'),'click',r_li);
+	//排序
+	function pai(){
+		var arr = [],li=$('number').childNodes[1].childNodes;
+		li.forEach(function(j){j.nodeType == 3 ? null : arr.push(parseInt(j.innerHTML))});
+		//降序排列
+		for(var i = 0;i<arr.length;i++){
+			for(var j=i + 1;j<arr.length;j++){
+				if(arr[j] - arr[i] > 0){
+					var a = arr[j];
+					arr[j] = arr[i];
+					arr[i] = a;
+				}
+			}
+		}
+		for(var k = 0;k<li.length;k++){
+			if(li[k].nodeType != 3){
+				var l = arr.shift() * 3;
+				li[k].style.height = l + 'px' ;
+				li[k].style.marginTop = $('number').clientHeight - l + 'px';
+			}
+		}
+		//偷懒只改了高度，反省ing
+	}
+	addEvent($('paixu'),'click',pai);
+
+
+
+
+
+
+
+
+
+
+	</script>
+</body>
+</html>
