@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>demo7</title>
+	<style type="text/css">
+		div {
+			margin: 5px;
+			border: solid 1px #808080;
+			display: inline-block;
+			width: 225px;
+			height: 103px;
+			float: left;
+		}
+		#header {
+			width: 475px;
+			height: 115px;
+		}
+		#ll_fir,#lr_fir,#rl_fir,#rr_fir {
+			width: 100px;
+			height: 90px;
+		}
+		button {
+			width: 50px;
+			height: 30px;
+			margin: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div id="header">
+		<div id="l_fir">
+			<div id="ll_fir"></div>
+			<div id="lr_fir"></div>
+		</div>
+		<div id="r_fir">
+			<div id="rl_fir"></div>
+			<div id="rr_fir"></div>
+		</div>
+	</div>
+	<button id="btton">二叉</button>
+	<script type="text/javascript">
+		function id(id){
+			return document.getElementById(id);
+		}
+		function addEvent(tar,type,fn){
+			if(typeof addEventListener !== 'undifined'){
+				return tar.addEventListener(type,fn);
+			}else if(typeof attachEvent !== 'undifined'){
+				return tar.attachEvent('on'+type,fn);
+			}else{
+				return tar['on'+type]=fn;
+			} 
+		}
+		//二叉树遍历
+		function bian(nod){
+			if(nod != null){
+				nod.style.backGround = 'RGB(220,20,60)';
+				bian(nod.childNodes[1]);
+				bian(nod.childNodes[2]);
+
+			}
+		}
+		addEvent(id('btton'),'click',bian(id('header')));
+		/*function(){
+					if(node != null){
+					node.style.borderColor = 'RGB(220,20,60)';
+					setTimeout(bian(node.childNodes[1]),5000);
+					setTimeout(bian(node.childNodes[2]),5000);
+				}
+		}*/
+
+
+
+
+
+
+	</script>
+</body>
+</html>
