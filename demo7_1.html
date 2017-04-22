@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>demo7</title>
+	<style type="text/css">
+		div {
+			margin: 5px;
+			border: solid 1px #808080;
+			display: inline-block;
+			width: 350px;
+			height: 225px;
+			float: left;
+		}
+		#header {
+			width: 750px;
+			height: 250px;
+		}
+		#ll_fir,#lr_fir,#rl_fir,#rr_fir {
+			margin-left: 10px;
+			margin-top: 5px;
+			width:150px;
+			height: 200px;
+		}
+		#lll_fir,#llr_fir,#lrl_fir,#lrr_fir,#rll_fir,#rlr_fir,#rrl_fir,#rrr_fir{
+			width: 60px;
+			height: 180px;
+		}
+		button {
+			width: 50px;
+			height: 30px;
+			margin: 10px;
+		}
+	</style>
+</head>
+<body>
+	<div id="header">
+		<div id="l_fir">
+			<div id="ll_fir">
+				<div id="lll_fir"></div>
+				<div id="llr_fir"></div>
+			</div>
+			<div id="lr_fir">
+				<div id="lrl_fir"></div>
+				<div id="lrr_fir"></div>
+			</div>
+		</div>
+		<div id="r_fir">
+			<div id="rl_fir">
+				<div id="rll_fir"></div>
+				<div id="rlr_fir"></div>
+			</div>
+			<div id="rr_fir">
+				<div id="rrl_fir"></div>
+				<div id="rrr_fir"></div>
+			</div>
+		</div>
+	</div>
+	<button id="btton">二叉</button>
+	<script type="text/javascript">
+		function id(id){
+			return document.getElementById(id);
+		}
+		function addEvent(tar,type,fn){
+			if(typeof addEventListener !== 'undifined'){
+				return tar.addEventListener(type,fn);
+			}else if(typeof attachEvent !== 'undifined'){
+				return tar.attachEvent('on'+type,fn);
+			}else{
+				return tar['on'+type]=fn;
+			} 
+		}
+		function Animation(obj){
+			var count = 255;
+			var timer = setInterval(function(){
+				obj.style.borderWidth = 1 +'px';		
+				if(count <= 0){
+					count = 0
+				}else{
+					obj.style.borderColor = 'RGB(' + count + ',0,0)';
+					obj.style.borderWidth = 2 + 'px';
+					count -= 5;
+				}
+			},20);
+		}
+		function Dlr(nod){
+			if(nod != null){
+				Animation(nod);
+				if(nod.children[0] != null){
+					setTimeout(function(){
+						Dlr(nod.children[0]);
+					},500);
+				}
+				if(nod.children[1] != null){
+					setTimeout(function(){
+						Dlr(nod.children[1]);
+					},10000);
+				}
+			}
+			
+		}
+		addEvent(id('btton'),'click',function(){Dlr(id('header'))});
+
+
+
+
+	</script>
+</body>
+</html>
